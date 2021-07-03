@@ -1,0 +1,7 @@
+DESARROLLAR UNA PLATAFORMA PARA EL COMERCIO DE PRODUCTORES Y COMERCIANTES
+ACTORES:
+•	poductor (ingresa su oferta de productos con fecha de caducidad)
+•	comerciante (Busca ofertas y confirma la compra)
+•	registra la transacción y hace un cargo por la misma
+La aplicación será una plataforma con módulos para administración de vendedores y para la administración de compradores; en las herramientas de vendedor es necesario incluir un conteo que permita cobrar por cada transacción cerrada, este cobro puede ser en línea y tambien a través de medios convencionales (para facilitar el comercio informal). El sistemá mostrará una descripción detallada de los productos ofertados y la posibilidad de agregarlos a un carrito de compras y una posterior facturación y entrega del producto.
+Visto desde una perspectiva social, la plataforma se puede constituir en un centro comercial que vincula productores y comerciantes, evitando intermediarios, con la consecuente reducción de precios y aumento del margen de utilidad para el productor y comerciante.
