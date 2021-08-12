@@ -1,6 +1,7 @@
-const connect = require('../config/database/mysql.connect');
+const connect = require('../config/database/mysql.connect');//Exportar la conexión mysql
 
 
+//Función para Insertar
 const insertRol = async (data) => {
   let img = data.img ? +"/static/img/config/roles/" + data.img : "/static/img/config/roles/default.png";
   const [result] = await connect.execute(
@@ -14,16 +15,19 @@ const insertRol = async (data) => {
   return result;
 };
 
+//Función para Obtener todos los datos
 const getRoles = async () => {
   const [result] = await connect.execute(`SELECT * FROM agrotec.rol  WHERE estado = 1;`);
   return result;
 };
 
+//Función para obtenr datos especificos
 const getRol = async (id) => {
   const [result] = await connect.execute(`SELECT * FROM agrotec.rol  WHERE id=? AND estado = 1;`, [id]);
   return result;
 };
 
+//Función para actualizar
 const updateRol = async (body) => {
   let respuesta = null;
   try {
@@ -75,6 +79,7 @@ const updateRol = async (body) => {
   return respuesta;
 };
 
+//Función para eliminar
 const deleteRol = async (id) => {
   const [result] = await connect.execute(`UPDATE agrotec.rol SET estado = 0 WHERE id = ?;`, [id]);
   return result;
@@ -86,4 +91,4 @@ module.exports = {
   getRol,
   updateRol,
   deleteRol
-};
+}; // exportar los modulos

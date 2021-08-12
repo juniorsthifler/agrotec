@@ -1,6 +1,7 @@
-const connect = require('../config/database/mysql.connect');
+const connect = require('../config/database/mysql.connect');//Exportar la conexión mysql
 
 
+//Función para Insertar
 const insertUser = async (data) => {
   let imagen = data.img ? +"/static/img/users/" + data.img : "/static/img/users/default.png";
   const [result] = await connect.execute(
@@ -17,27 +18,37 @@ const insertUser = async (data) => {
       data.direction
     ]
   );
-  let id_insercion = result.insertId;
+  //let id_insercion = result.insertId;
   await connect.execute(
-    `INSERT INTO agrotec.user (id_rol, id_person) VALUES (?, ?); `,
+    `INSERT INTO agrotec.user (id, id_rol, id_person) VALUES (?, ?, ?); `,
     [
+      data.dni + "_" + data.id_rol,
       data.id_rol,
-      id_insercion
+      data.dni
     ]
   );
   return result;
 };
 
+//Función para Obtener todos los datos
 const getUsers = async () => {
-  const [result] = await connect.execute(`SELECT * FROM agrotec.person WHERE estado = 1;`);
+  const [result] = await connect.execute(`SELECT 
+  person.dni, person.full_name, person.date_birth , person.img, person.celular, person.email, person.user, person.password, person.direction,
+  rol.id as id_rol, rol.rol
+  FROM agrotec.person person, agrotec.user user, agrotec.rol rol WHERE person.estado = 1 AND user.estado = 1 AND rol.estado = 1 AND user.id_person = person.dni AND user.id_rol = rol.id;`);
   return result;
 };
 
+//Función para obtenr datos especificos
 const getUser = async (dni) => {
-  const [result] = await connect.execute(`SELECT * FROM agrotec.person  WHERE dni=? AND estado = 1;`, [dni]);
+  const [result] = await connect.execute(`SELECT 
+  person.dni, person.full_name, person.date_birth , person.img, person.celular, person.email, person.user, person.password, person.direction,
+  rol.id as id_rol, rol.rol
+  FROM agrotec.person person, agrotec.user user, agrotec.rol rol WHERE person.estado = 1 AND user.estado = 1 AND rol.estado = 1 AND user.id_person = person.dni AND user.id_rol = rol.id AND person.dni=?;`, [dni]);
   return result;
 };
 
+//Función para actualizar
 const updateUser = async (body) => {
   let respuesta = null;
   try {
@@ -98,8 +109,36 @@ const updateUser = async (body) => {
   return respuesta;
 };
 
+//Función para eliminar
 const deleteUser = async (dni) => {
   const [result] = await connect.execute(`UPDATE agrotec.person SET estado = 0 WHERE dni = ?;`, [dni]);
+  return result;
+};
+
+
+//Función para agregar roles
+const addRol = async (data) => {
+  const [result] = await connect.execute(
+    `INSERT INTO agrotec.user (id, id_rol, id_person) VALUES (?, ?, ?); `,
+    [
+      data.dni + "_" + data.id_rol,
+      data.id_rol,
+      data.dni
+    ]
+  );
+  return result;
+};
+
+
+//Función para desactivar un rol
+const disableRol = async (id) => {
+  const [result] = await connect.execute(`UPDATE agrotec.user SET estado = 0 WHERE id = ?;`, [id]);
+  return result;
+};
+
+//Función para activar un rol
+const enableRol = async (id) => {
+  const [result] = await connect.execute(`UPDATE agrotec.user SET estado = 1 WHERE id = ?;`, [id]);
   return result;
 };
 
@@ -108,5 +147,8 @@ module.exports = {
   getUsers,
   getUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  addRol,
+  disableRol,
+  enableRol
 };
