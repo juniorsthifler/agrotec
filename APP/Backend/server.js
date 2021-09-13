@@ -9,7 +9,11 @@ const authJWT = require('./src/libs/auth');//JsonWebToken para poner seguridad a
 const config = require('./src/config/enviroment'); //Configuración del entorno de desarrollo
 const routeRol = require('./src/routers/rol.routes');//Rutas de roles
 const routerUser = require('./src/routers/user.routes');//Rutas de usuarios
-
+const routerCatalogoFinanciero = require('./src/routers/catalogo_financiero.routes');//Rutas del catalogo financiero
+const routerHerramientasFinancieras = require('./src/routers/herramienta_financiera.routes');//Rutas de herramientas financieras
+const routerOfertas = require('./src/routers/ofertas.routes');//Rutas de Ofertas
+const routerProductos = require('./src/routers/producto.routes');//Rutas de Producto
+const routerTransaccion = require('./src/routers/transaccion.routes');//Rutas de transaciones
 passport.use(authJWT);//Indico al passport que utilizará una seguridad de JWT
 
 const app = express();//Defino un servidor
@@ -27,6 +31,11 @@ app.use(passport.initialize());//Anexo passport al server
 // Rutas
 app.use('/rol', routeRol);//Anexo las rutas de rol
 app.use('/user', routerUser);//Anexo las rutas del user
+app.use('/catalogo_financiero', routerCatalogoFinanciero);//Anexo las rutas del catalogo financiero 
+app.use('/herramienta_financiera', routerHerramientasFinancieras);//Anexo las rutas de las herramientas financieras
+app.use('/producto', routerProductos);//Anexo las rutas de productos
+app.use('/oferta', routerOfertas);//Anexo las rutas de ofertas
+app.use('/transaccion', routerTransaccion);//Anexo las rutas de transacciones
 
 // Pongo en ejecución en el server
 app.listen(config.PORT, config.HOST, () => {

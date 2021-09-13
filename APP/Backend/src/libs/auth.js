@@ -11,7 +11,6 @@ let jwtOptions = {
 };
 
 module.exports = new passportJWT.Strategy(jwtOptions, (jwtPayload, next) => {
-
     serviceUser
         .getUser(jwtPayload.id)
         .then(usuario => {

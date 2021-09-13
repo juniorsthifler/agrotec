@@ -50,6 +50,12 @@ const enableRol = async (id) => {
   return result;
 };
 
+//Función proxi para loguearse
+const Login = async (user, password) => {
+  const result = await modelUser.Login(user, password);//Llamar la funciom de obtener datos de logueo
+  return result;
+};
+
 module.exports = {
   insertUser,
   getUsers,
@@ -58,5 +64,6 @@ module.exports = {
   deleteUser,
   addRol,
   disableRol,
-  enableRol
+  enableRol,
+  Login
 };// Exportar todas las funciones proxi
