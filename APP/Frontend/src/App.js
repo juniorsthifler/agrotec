@@ -12,6 +12,7 @@ import Perfil from './Vistas/Perfil';
 import Upload from './Vistas/Upload';
 import Main from './Componentes/Main';
 import Feed from './Vistas/Feed';
+import SelectPeril from './Vistas/SelctPerfil';
 import Post from './Vistas/Post';
 
 initAxiosInterceptor();
@@ -30,16 +31,16 @@ export default function App() {
   }
 
 
-  async function login(email, password) {
-    const { data } = await Axios.post('/api/usuarios/login', { email, password });
-    setUsuario(data.usuario);
-    setToken(data.token);
+  async function login(user, password) {
+    const { data: us } = await Axios.post('/user/login', { user, password });
+    setUsuario(us.data);
+    setToken(us.token);
   }
 
   async function signup(usuario) {
-    const { data } = await Axios.post('/api/usuarios/signup', usuario);
-    setUsuario(data.usuario);
-    setToken(data.token);
+    const { data: us } = await Axios.post('/user/new', usuario);
+    setUsuario(us.data);
+    setToken(us.token);
   }
 
   function logout() {
@@ -54,8 +55,8 @@ export default function App() {
         return;
       }
       try {
-        const { data: usuario } = await Axios.get('/api/usuarios/me');
-        setUsuario(usuario);
+        const { data: usuario } = await Axios.post('/user/me');
+        setUsuario(usuario.data);
         setCargandoUsuario(false);
       } catch (error) {
         console.log(error);
@@ -87,7 +88,8 @@ function LoginRoutes({ mostrarError, usuario, logout }) {
       <Route path="/upload/" render={(props) => <Upload {...props} mostrarError={mostrarError} />} />
       <Route path="/post/:id" render={(props) => <Post {...props} mostrarError={mostrarError} usuario={usuario} />} />
       <Route path="/perfil/:username" render={(props) => <Perfil {...props} mostrarError={mostrarError} usuario={usuario} logout={logout} />} />
-      <Route path="/" render={(props) => <Feed {...props} mostrarError={mostrarError} usuario={usuario} />} default />
+      <Route path="/feed" render={(props) => <Feed {...props} mostrarError={mostrarError} usuario={usuario} />} />
+      <Route path="/" render={(props) => <SelectPeril {...props} mostrarError={mostrarError} usuario={usuario} Loading={Loading} logout={logout} />} default />
     </Switch>
   );
 }

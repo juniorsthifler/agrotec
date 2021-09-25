@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt'); //Librería para encriptar texto plano
 const insertUser = async (data) => {
   let imagen = data.img ? +"/static/img/users/" + data.img : "/static/img/users/default.png";
   let password = await bcrypt.hash(data.password, 10);
-  const [result] = await connect.execute(
+  await connect.execute(
     `INSERT INTO agrotec.person (dni, full_name, date_birth, img, celular, email, user, password, direction) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?); `,
     [
       data.dni,
@@ -28,6 +28,8 @@ const insertUser = async (data) => {
       data.dni
     ]
   );
+
+  let result = await getUser(data.dni);
   return result;
 };
 

@@ -43,7 +43,7 @@ router.post('/new', async (req, res) => {
                     //Respondo al cliente
                     res.status(200).json({
                         status: true,
-                        data: "user",
+                        data: results,
                         token: crearToken({ id: req.body.dni }),
                         message: "Se agregó un nuevo usuario"
                     });
