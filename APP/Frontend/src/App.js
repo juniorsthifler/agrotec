@@ -18,6 +18,7 @@ import Post from './Vistas/Post';
 initAxiosInterceptor();
 export default function App() {
   const [usuario, setUsuario] = useState(null);
+  const [rolActual, setRolActual] = useState(null);
   const [cargandoUsuario, setCargandoUsuario] = useState(true);
   const [error, setError] = useState(null);
 
@@ -45,6 +46,7 @@ export default function App() {
 
   function logout() {
     setUsuario(null);
+    setRolActual(null);
     deleteToken();
   }
 
@@ -75,21 +77,20 @@ export default function App() {
 
   return (
     <Router>
-      <Nav usuario={usuario} />
+      <Nav usuario={usuario} rolActual={rolActual} />
       <Error mensaje={error} esconderError={esconderError} />
-      {usuario ? <LoginRoutes mostrarError={mostrarError} usuario={usuario} logout={logout} /> : <LogoutRoutes login={login} signup={signup} mostrarError={mostrarError} />}
+      {usuario ? <LoginRoutes mostrarError={mostrarError} usuario={usuario} logout={logout} rolActual={rolActual} setRolActual={setRolActual} /> : <LogoutRoutes login={login} signup={signup} mostrarError={mostrarError} />}
     </Router>
   );
 }
 
-function LoginRoutes({ mostrarError, usuario, logout }) {
+function LoginRoutes({ mostrarError, usuario, logout, rolActual, setRolActual }) {
   return (
     <Switch>
       <Route path="/upload/" render={(props) => <Upload {...props} mostrarError={mostrarError} />} />
       <Route path="/post/:id" render={(props) => <Post {...props} mostrarError={mostrarError} usuario={usuario} />} />
       <Route path="/perfil/:username" render={(props) => <Perfil {...props} mostrarError={mostrarError} usuario={usuario} logout={logout} />} />
-      <Route path="/feed" render={(props) => <Feed {...props} mostrarError={mostrarError} usuario={usuario} />} />
-      <Route path="/" render={(props) => <SelectPeril {...props} mostrarError={mostrarError} usuario={usuario} Loading={Loading} logout={logout} />} default />
+      <Route path="/" render={(props) => (rolActual !== null) ? <Feed {...props} mostrarError={mostrarError} usuario={usuario} rolActual={rolActual} /> : <SelectPeril {...props} mostrarError={mostrarError} usuario={usuario} Loading={Loading} logout={logout} setRolActual={setRolActual} />} default />
     </Switch>
   );
 }
